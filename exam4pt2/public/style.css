@@ -1,0 +1,72 @@
+/* Container centers content and limits width */
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/* Horizontal button group */
+.horizontal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+/* Vertical button group */
+.vertical-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Basic button styles */
+.button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  min-width: 100px;
+  transition: background-color 0.3s ease;
+}
+
+/* Color variations */
+.button.blue {
+  background-color: #007BFF;
+}
+.button.blue:hover {
+  background-color: #0056b3;
+}
+
+.button.red {
+  background-color: #dc3545;
+}
+.button.red:hover {
+  background-color: #a71d2a;
+}
+
+.button.green {
+  background-color: #28a745;
+}
+.button.green:hover {
+  background-color: #19692c;
+}
+
+/* Text box styling */
+.text-box {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.bold-text {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Spacer box for layout spacing */
+.spacer-box {
+  height: 30px;
+}

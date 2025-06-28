@@ -1,18 +1,28 @@
+
+//import node-fetch so that the Express server can make HTTP requests to APIs
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
+
+
 const express = require('express');
-const app = express();
+const path = require('path'); 
+const app = express(); //initialize the expo app
 
-// ✅ If using Node 18+, you can use fetch natively. Otherwise, uncomment the line below:
-// const fetch = require('node-fetch'); // npm install node-fetch
-
+const localIP = '192.168.0.22'; //ip address of computer
+const port = 3000;
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS for frontend access (React Native needs this if calling locally)
+// Enable CORS so that frontend (index.html)can access the backend
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // You can restrict this in production
+  res.setHeader('Access-Control-Allow-Origin', '*');
   next();
 });
 
-// GET /meals?ingredient=chicken_breast
+
+// Make files in the public/ directory become accessible to the browser
+app.use(express.static(path.join(__dirname, 'public'))); 
+
+// API route: reads an ingredient (the query input), sends request to TheMealDB, and returns a JSON obj containing the meals. 
 app.get('/meals', async (req, res) => {
   const ingredient = req.query.ingredient;
 
@@ -24,17 +34,21 @@ app.get('/meals', async (req, res) => {
 
   try {
     const response = await fetch(url);
-    const json = await response.json();
-
-    // Return meals list
-    res.json({ meals: json.meals || [] });
-  } catch (error) {
-    console.error('Fetch error:', error.message);
+    const data = await response.json();
+    res.json({ meals: data.meals || [] });
+  } catch (err) {
+    console.error('Fetch error:', err.message);
     res.status(500).json({ error: 'Failed to fetch meals' });
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+// serve index.html on Root / so that app is accessible via browser on mobile device
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
+// Start the server on all interfaces
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running at http://${localIP}:${PORT}/`);
 });
